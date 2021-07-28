@@ -15,5 +15,14 @@ let package = Package(
         .target(
             name: "eq-words",
             dependencies: []),
+        .target(
+            name: "gen-legis",
+	    dependencies: [],
+	    resources: [
+	       .copy("Resources/chap-1.txt"),
+	       .copy("Resources/chap-2.txt"),
+	       .copy("Resources/chap-3.txt"),
+	       .copy("Resources/comment.txt"),
+	    ]),
     ]
 )
