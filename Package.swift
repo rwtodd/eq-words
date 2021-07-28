@@ -23,6 +23,7 @@ let package = Package(
 	       .copy("Resources/chap-2.txt"),
 	       .copy("Resources/chap-3.txt"),
 	       .copy("Resources/comment.txt"),
+	       .copy("Resources/extra-words.txt"),
 	    ]),
     ]
 )
