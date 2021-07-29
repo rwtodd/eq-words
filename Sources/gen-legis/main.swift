@@ -1,6 +1,9 @@
 import Foundation
 
-fileprivate let skipWords : Set<String> = [ "a", "an", "the", "to", "br" ]
+fileprivate let skipWords : Set<String> = [ 
+   "br", "a", "an", "the", "to", "it", "in", "are", "for", "of", "is",
+   "and"
+]
 
 fileprivate let letterValues: [Character: Int] = [
    "-": 0,
@@ -13,7 +16,7 @@ fileprivate let letterValues: [Character: Int] = [
 ]
 
 fileprivate func gematria(for str: String) -> Int {
-   return str.reduce(0) { $0 + letterValues[$1, default: 0] }
+   return str.reduce(0) { (total,ch) in total + letterValues[ch, default: 0] }
 }
 
 // ----------------------------------------------------------------------

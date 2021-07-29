@@ -1,4 +1,4 @@
-let letterValues: [Character: Int] = [
+fileprivate let letterValues: [Character: Int] = [
    "A": 1 ,  "L": 2 ,  "W": 3 ,  "H": 4 ,  "S": 5 ,  "D": 6 ,  "O": 7 ,  "Z": 8 ,  "K": 9 , 
    "V": 10 , "G": 11 , "R": 12 , "C": 13 , "N": 14 , "Y": 15 , "J": 16 , "U": 17 , "F": 18 , 
    "Q": 19 , "B": 20 , "M": 21 , "X": 22 , "I": 23 , "T": 24 , "E": 25 , "P": 26,
@@ -7,14 +7,10 @@ let letterValues: [Character: Int] = [
    "q": 19 , "b": 20 , "m": 21 , "x": 22 , "i": 23 , "t": 24 , "e": 25 , "p": 26
 ]
 
-func gematria(for str: String) -> Int {
-   var result = 0
-   for ch in str {
-      if let v = letterValues[ch] {
-          result += v
-      }
+fileprivate func gematria(for str: String) -> Int {
+   return str.reduce(0) { (total, ch) in
+     return total + letterValues[ch, default: 0]
    }
-   return result
 }
 
 while let ln = readLine() {
