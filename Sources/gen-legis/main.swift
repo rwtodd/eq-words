@@ -55,6 +55,13 @@ fileprivate let htmlFooter = """
 </html>
 """
 
+fileprivate func linkAddr(_ num: Int) -> String {
+   return "<a href=\"lexicon.html#n\(num)\">\(num)</a>"
+}
+fileprivate func headerAnchor(_ num: Int) -> String {
+   return "<a name=\"n\(num)\">\(num)</a>"
+}
+
 fileprivate func gematriaHTML(for str: String) -> String {
    var buffer : [Substring] = []
    var onPrintable = true
@@ -76,7 +83,7 @@ fileprivate func gematriaHTML(for str: String) -> String {
             let printable = String(str[start..<idx])
             if total > 0 && !skipWords.contains(printable) {
                // it seems significant enough to print a total...
-               buffer.append("<div><span>\(total)</span>\(printable)</div>") 
+               buffer.append("<div><span>\(linkAddr(total))</span>\(printable)</div>") 
                addToLexicon(printable, withValue: total)
             } else {
                // it wasn't significant enough to print a total...
@@ -98,7 +105,7 @@ fileprivate func gematriaHTML(for str: String) -> String {
    // need to output whatever was left...
    let remainder = String(str[start...])
    if onPrintable && (total > 0) && !skipWords.contains(remainder) {
-       buffer.append("<div><span>\(total)</span>\(remainder)</div>") 
+       buffer.append("<div><span>\(linkAddr(total))</span>\(remainder)</div>") 
        addToLexicon(remainder, withValue: total)
    } else {
        buffer.append(remainder[...])
@@ -162,8 +169,8 @@ fileprivate func formatLexicon() {
       buffer.append("<h1>Lexicon</h1>")
       buffer.append("<dl>\n")
       for k in lexicon.keys.sorted() {
-         buffer.append("<dt>\(k)</dt>\n")
-         buffer.append("<dl>\(lexicon[k]!.joined(separator: ", "))</dl>\n")
+         buffer.append("<dt>\(headerAnchor(k))</dt>\n")
+         buffer.append("<dd>\(lexicon[k]!.joined(separator: ", "))</dd>\n")
       }
       buffer.append("</dl>")
       buffer.append(htmlFooter)
