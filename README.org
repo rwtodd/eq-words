@@ -1,0 +1,13 @@
+#+TITLE: org-rwtodd.eq-words
+#+AUTHOR: Richard Todd
+
+* Description
+  
+A clojure package to play with E.Q. (previously in swift, and you can
+still see the swift code in earlier commits in this repository if you
+care to do so.
+
+* Resources
+
+https://www.sacred-texts.com/oto/engccxx.htm
+
