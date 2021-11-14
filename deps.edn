@@ -14,4 +14,4 @@
            :html
            {:extra-paths ["html"]
             :extra-deps {org-rwtodd/argparse {:local/root "../org-rwtodd.argparse"} }
-            :main-opts ["-m" "org-rwtodd.eq-words.html"]}}}
+            :main-opts ["-m" "org-rwtodd.eq-cipher.html"]}}}

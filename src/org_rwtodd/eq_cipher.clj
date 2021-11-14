@@ -50,28 +50,28 @@
   [string]
   (transduce (keep *cipher*) + string))
 
+(defn- format-wide
+  "Format a sequence of k/v pairs separated by tabs, five per line"
+  [coll]
+  (dorun
+    (map (fn [[k v] sep] (print (format "%c: %d%s" k v sep)))
+         coll
+         (cycle ["\t" "\t" "\t" "\t" "\n"])))
+  (println))
+
 (defn display-cipher
   "Pretty-print cipher"
   ([] (display-cipher *cipher*))
   ([cipher]
-   (dorun
-    (map (fn [k sep]
-           (print (format "%c: %d%s" k (get cipher k) sep)))
-         (concat (seq "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-                 (sort (remove #(Character/isLetter %) (keys cipher))))
-         (cycle ["\t" "\t" "\t" "\t" "\n"])))
-   (println)))
+   (format-wide (map (fn [k] [k (get cipher k 0)])
+                     (concat (seq "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+                             (sort (remove #(Character/isLetter %) (keys cipher))))))))
 
 (defn display-cipher-by-number
   "Pretty-print a cipher by numeric value"
   ([] (display-cipher-by-number *cipher*))
   ([cipher]
-   (dorun
-    (map (fn [[k v] sep]
-           (print (format "%c: %d%s" k v sep)))
-         (remove #(Character/isLowerCase (key %)) (sort-by val cipher))
-         (cycle ["\t" "\t" "\t" "\t" "\n"])))
-   (println)))
+   (format-wide (remove #(Character/isLowerCase (key %)) (sort-by val cipher)))))
 
 (defn split-up-string
   "split a string into calculated words and non-words"
@@ -86,45 +86,6 @@
                         [0 "" 0]
                         (eduction (map *cipher*) (partition-by nil?) src))))
 
-;; ====== Move to the html program eventually 
-(def skip-words
-  "Words that we shouldn't bother annotating."
-  #{ "br", "a", "an", "the", "to", "it", "in", "are", "for", "of", "is", "and" })
-
-(defn output-string
-  "output a single string, adding non-zero words to the given dict, and
-  annotating the non-zero words as we go"
-  [dict src]
-  (let [out-dict (reduce (fn [dict [s v]]
-                           (if (or (zero? v) (skip-words s))
-                             (do
-                               (print s)
-                               dict)
-                             (do
-                               (print (str "(" s ": " v ")"))
-                               (assoc! dict s v))))
-                         dict
-                         (split-up-string src))]
-    (println)
-    out-dict))
-
-(defn output-strings
-  "output a series of strings, building up a map of all non-zero words"
-  ([strs]
-   (output-strings {} strs))
-  ([orig-dict strs]
-   (persistent! (reduce output-string (transient orig-dict) strs))))
-
-(defn output-glossary
-  "output words by value"
-  [dict]
-  (dorun (map (fn [[k vs]]
-                (println (format "%04d: %s" k (pr-str vs))))
-              
-              (into (sorted-map)
-                    (map (fn [[k v]]
-                           [k (map key v)]))
-                    (group-by val dict)))))
 
 ;; ====== end of file
 ;; Local Variables:
